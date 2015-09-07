@@ -29,7 +29,7 @@ public class HistoryActivity extends Activity implements View.OnClickListener {
     ArrayAdapter<String> arrayAdapter;
     private String current;
     private String dataView;
-    private String clr = "#deletedata";
+    //private String clr = "#deletedata";
     private String select;
     private int type = 1;
 

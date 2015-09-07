@@ -192,11 +192,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 }
                 break;
             case R.id.btnMEM:
-//                Fragment history = new HistoryFragment();
-//                FragmentManager fragmentManager = getFragmentManager();
-//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                fragmentTransaction.replace(android.R.id.content, history);
-//                fragmentTransaction.commit();
                 String current = new String();
                 if (textView1.getText().toString().equals("")) {
                     current = "#nodata=0";
@@ -262,9 +257,15 @@ public class MainActivity extends Activity implements View.OnClickListener {
             }
             switch (resultCode) {
                 case CLEAR:
-                    dbAdapter.open();
-                    dbAdapter.deleteAllExpression();
-                    dbAdapter.close();
+                    try {
+                        dbAdapter.open();
+                        dbAdapter.deleteAllExpression();
+                        dbAdapter.close();
+
+                    } catch (SQLiteException e) {
+                        e.printStackTrace();
+
+                    }
 
                     if (!reslt.equals("#nodata=0")) {
                         textView2.setText(stack.pop());

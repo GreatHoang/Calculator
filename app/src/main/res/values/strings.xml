@@ -4,7 +4,30 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_history">HistoryActivity</string>
+    <string name="historylabel">HISTORY</string>
+    <string name="btnhistoryClear">CLear History</string>
+    <string name="btnhistoryClose">Close</string>
+    <string name="btnC">C</string>
+    <string name="btnhistory">Mem</string>
+    <string name="btnCE">CE</string>
+    <string name="btnDiv">÷</string>
+    <string name="btnNum7">7</string>
+    <string name="btnNum8">8</string>
+    <string name="btnNum9">9</string>
+    <string name="btnMul">*</string>
+    <string name="btnNum4">4</string>
+    <string name="btnNum5">5</string>
+    <string name="btnNum6">6</string>
+    <string name="btnSub">-</string>
+    <string name="btnNum1">1</string>
+    <string name="btnNum2">2</string>
+    <string name="btnNum3">3</string>
+    <string name="btnAdd">+</string>
+    <string name="btnNum0">0</string>
+    <string name="btnOpen">(</string>
+    <string name="btnClose">)</string>
+    <string name="btnResult">=</string>
 </resources>
