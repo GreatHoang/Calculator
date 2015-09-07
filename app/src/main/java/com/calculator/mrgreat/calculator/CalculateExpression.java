@@ -18,7 +18,11 @@ public class CalculateExpression {
             String postfix = "";
             boolean negative = true;
             Stack<String> stack = new Stack<>();
-            StringTokenizer stringTokenizer = new StringTokenizer(infix, OPERATORS, true);
+            String standard = convertToStandardExpression(infix);
+            //Log.e("standard", stdd);
+            StringTokenizer stringTokenizer = new StringTokenizer(standard, OPERATORS, true);
+            int count = stringTokenizer.countTokens();
+            Log.e("count", "" + count);
             while (stringTokenizer.hasMoreTokens()) {
                 String token = stringTokenizer.nextToken().trim();
                 String op;
@@ -67,6 +71,7 @@ public class CalculateExpression {
 
             }
 
+            Log.e("postfox", postfix);
             return postfix;
         } catch (EmptyStackException | NumberFormatException e) {
             throw new ExpressionFormatException();
@@ -142,6 +147,39 @@ public class CalculateExpression {
 
     }
 
+    private static String convertToStandardExpression(String expression) {
+        StringTokenizer strT = new StringTokenizer(expression, OPERATORS, true);
+        Stack<String> sstack = new Stack<>();
+        String standard = "";
+
+        while (strT.hasMoreTokens()) {
+            String token2 = strT.nextToken().trim();
+
+            if (!sstack.isEmpty()) {
+                String token1 = sstack.pop();
+
+                if (!token1.equals("(") && !token1.equals(")") && !token1.equals("+") && !token1.equals("-") && !token1.equals("*") && !token1.equals("÷") && token2.equals("(")) {
+                    token2 = "*" + token2;
+
+                }
+                if (!token2.equals("(") && !token2.equals(")") && !token2.equals("+") && !token2.equals("-") && !token2.equals("*") && !token2.equals("÷") && token1.equals(")")) {
+                    token1 = token1 + "*";
+
+                }
+
+                standard += token1;
+
+            }
+            sstack.push(token2);
+
+        }
+        String last = sstack.pop();
+        standard += last;
+
+        return standard;
+
+    }
+
     private static int Priority(String operator) {
         switch (operator) {
             case "n-":
@@ -151,7 +189,7 @@ public class CalculateExpression {
             case "÷":
                 return 1;
             case "+":
-            case "-1":
+            case "-":
                 return 0;
             default:
                 return -1;

@@ -184,7 +184,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     textView2.setText(result);
                     dbAdapter.open();
                     long id = dbAdapter.insertExpression(textView1.getText().toString(), result);
-                    Log.e("id", "" + id);
+                    //Log.e("id", "" + id);
                     dbAdapter.close();
                 } catch (ExpressionFormatException | SQLiteException e) {
                     ExpressionError(e);
