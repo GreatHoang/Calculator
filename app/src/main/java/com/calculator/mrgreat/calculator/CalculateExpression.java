@@ -21,8 +21,8 @@ public class CalculateExpression {
             String standard = convertToStandardExpression(infix);
             //Log.e("standard", stdd);
             StringTokenizer stringTokenizer = new StringTokenizer(standard, OPERATORS, true);
-            int count = stringTokenizer.countTokens();
-            Log.e("count", "" + count);
+//            int count = stringTokenizer.countTokens();
+//            Log.e("count", "" + count);
             while (stringTokenizer.hasMoreTokens()) {
                 String token = stringTokenizer.nextToken().trim();
                 String op;
