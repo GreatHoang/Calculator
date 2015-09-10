@@ -30,4 +30,12 @@
     <string name="btnOpen">(</string>
     <string name="btnClose">)</string>
     <string name="btnResult">=</string>
+    <string name="btnNumA">A</string>
+    <string name="btnNumB">B</string>
+    <string name="btnNumC">C</string>
+    <string name="btnNumD">D</string>
+    <string name="btnNumE">E</string>
+    <string name="btnNumF">F</string>
+    <string name="basic">Basic</string>
+    <string name="programming">Programming</string>
 </resources>

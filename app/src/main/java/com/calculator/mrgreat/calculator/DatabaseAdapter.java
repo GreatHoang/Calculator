@@ -15,17 +15,19 @@ public class DatabaseAdapter {
     public static final String ID = "id";
     public static final String EXRESSION = "expression";
     public static final String RESULT = "result";
+    public static final String BASE = "base";
 
     public static final String DATABASE_NAME = "ExpressionDB";
     public static final String DATABASE_TABLE = "tblExpression";
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
 
     static final String DATABASE_CREATE = "CREATE TABLE "
             + DATABASE_TABLE
             + "("
             + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + EXRESSION + " TEXT NOT NULL, "
-            + RESULT + " TEXT NOT NULL"
+            + RESULT + " TEXT NOT NULL, "
+            + BASE + " INTEGER NOT NULL"
             + ");";
 
     final Context context;
@@ -33,41 +35,61 @@ public class DatabaseAdapter {
     DatabaseHelper DBHelper;
     SQLiteDatabase db;
 
-    public DatabaseAdapter(Context cxt){
+    /*private static DatabaseAdapter dbCreate = null;
+
+    public DatabaseAdapter() {
+    }
+
+    public static DatabaseAdapter databaseCreate() {
+        if (dbCreate == null) {
+            dbCreate = new DatabaseAdapter();
+
+        }
+        return dbCreate;
+
+    }*/
+
+    public DatabaseAdapter(Context cxt) {
         this.context = cxt;
         DBHelper = new DatabaseHelper(context);
 
     }
 
-    public DatabaseAdapter open() throws SQLException{
+    public DatabaseAdapter open() throws SQLException {
         db = DBHelper.getWritableDatabase();
         return this;
 
     }
 
-    public void close(){
+    public void close() {
         DBHelper.close();
 
     }
 
-    public long insertExpression(String expression, String result){
+    public synchronized long insertExpression(String expression, String result, int base) {
         ContentValues initialValues = new ContentValues();
         initialValues.put(EXRESSION, expression);
         initialValues.put(RESULT, result);
+        initialValues.put(BASE, base);
         return db.insert(DATABASE_TABLE, null, initialValues);
 
     }
 
-    public Cursor getAllExpression(){
-        return db.query(DATABASE_TABLE, new String[]{EXRESSION, RESULT}, null, null, null, null, null);
+    public synchronized Cursor getAllExpression() {
+        return db.query(DATABASE_TABLE, new String[]{ID, EXRESSION, RESULT, BASE}, null, null, null, null, null);
 
     }
 
-    public void deleteAllExpression(){
+    public synchronized void deleteAllExpression() {
         if (db.delete(DATABASE_TABLE, null, null) != 1) {
             Log.d("delete", "ERROR");
 
         }
+
+    }
+
+    public synchronized int deleteByID(int id){
+        return db.delete(DATABASE_TABLE, ID + "=" + id, null);
 
     }
 

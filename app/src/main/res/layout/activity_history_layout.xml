@@ -17,12 +17,11 @@
         android:textColor="#ff851c"
         android:background="#87a1c1ff"/>
 
-    <ListView
-        android:id="@+id/listView"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/listHitory"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="11"
-        android:background="#2dff64ac"></ListView>
+        android:layout_weight="11"/>
 
     <LinearLayout
         android:orientation="horizontal"

@@ -3,7 +3,12 @@ package com.calculator.mrgreat.calculator;
 import android.app.Activity;
 //import android.support.v7.app.AppCompatActivity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,17 +19,21 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import static android.widget.AdapterView.*;
 
 public class HistoryActivity extends Activity implements View.OnClickListener {
 
-    ListView listView;
+
     Button buttonClear;
     Button buttonClose;
+    Button deleteItem;
+    RecyclerView recyclerView;
 
-    private ArrayList<String> array;
+    private List<ExpressionFormat> array;
+    protected ExpressionViewAdapter adapter;
 
     ArrayAdapter<String> arrayAdapter;
     private String current;
@@ -38,38 +47,80 @@ public class HistoryActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history_layout);
 
-        listView = (ListView) findViewById(R.id.listView);
+        recyclerView = (RecyclerView) findViewById(R.id.listHitory);
         buttonClear = (Button) findViewById(R.id.btnclearHistory);
         buttonClose = (Button) findViewById(R.id.btncloseHistory);
 
+
+
+        recyclerView.setHasFixedSize(true);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(linearLayoutManager);
+
         array = new ArrayList<>();
+        try {
+            MainActivity.dbAdapter.open();
+            Cursor cursor = MainActivity.dbAdapter.getAllExpression();
+            if (cursor.moveToFirst()) {
+                while (!cursor.isAfterLast()) {
+                    ExpressionFormat expressionF = new ExpressionFormat();
+                    expressionF.id = cursor.getInt(0);
+                    expressionF.expression = cursor.getString(1);
+                    expressionF.result = cursor.getString(2);
+                    expressionF.base = cursor.getInt(3);
+                    cursor.moveToNext();
+                    array.add(expressionF);
 
-        Intent intent = getIntent();
-        Bundle bundle = intent.getBundleExtra("Expression");
-        current = bundle.getString("valueCurrentSent");
-        dataView = bundle.getString("valueDataSent");
+                }
 
-        if (!dataView.equals("#nodata")){
-            StringTokenizer strT = new StringTokenizer(dataView, "#");
-            while (strT.hasMoreTokens()){
-                String token = strT.nextToken();
-                array.add(token);
+            } else {
+                Log.e("data", "#nodata");
 
             }
+
+        } catch (SQLiteException e) {
+            e.printStackTrace();
 
         }
 
-        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, array);
-        listView.setAdapter(arrayAdapter);
-        listView.setOnItemClickListener(new OnItemClickListener() {
+        adapter = new ExpressionViewAdapter(array);
+        recyclerView.setAdapter(adapter);
+        adapter.setListener(new ExpressionViewAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //type = 1;
-                select = array.get(position);
-                sentToMain(select, MainActivity.SELECT);
+            public void onItemClick(View view, int position) {
+                int i = view.getId();
+                switch (i) {
+                    case R.id.btnDelete:
+                        try {
+                            MainActivity.dbAdapter.open();
+                            MainActivity.dbAdapter.deleteByID(array.get(position).id);
+                            MainActivity.dbAdapter.close();
+                            array.remove(position);
+                            adapter.notifyDataSetChanged();
+                        } catch (SQLiteException e) {
+                            e.printStackTrace();
+
+                        }
+
+                        break;
+                    case R.id.itemView:
+                        Intent intent = new Intent();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("expression", array.get(position).expression);
+                        bundle.putInt("base", array.get(position).base);
+                        intent.putExtra("Result", bundle);
+                        intent.setClass(HistoryActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        break;
+                    default:
+                        break;
+
+                }
 
             }
         });
+
 
         buttonClear.setOnClickListener(this);
         buttonClose.setOnClickListener(this);
@@ -102,19 +153,21 @@ public class HistoryActivity extends Activity implements View.OnClickListener {
     public void onClick(View v) {
         int i = v.getId();
         switch (i) {
-            case R.id.btncloseHistory:
-                if (type == 1){
-                    sentToMain(current, MainActivity.CLOSE);
+            case R.id.btnclearHistory:
+                try {
+                    MainActivity.dbAdapter.open();
+                    MainActivity.dbAdapter.deleteAllExpression();
+                    MainActivity.dbAdapter.close();
 
-                }else {
-                    sentToMain(current, MainActivity.CLEAR);
+                } catch (SQLiteException e) {
+                    e.printStackTrace();
 
                 }
-                break;
-            case R.id.btnclearHistory:
                 array.clear();
-                listView.setAdapter(arrayAdapter);
-                type = 2;
+                adapter.notifyDataSetChanged();
+                break;
+            case R.id.btncloseHistory:
+                this.finish();
                 break;
             default:
                 break;
@@ -132,5 +185,6 @@ public class HistoryActivity extends Activity implements View.OnClickListener {
         finish();
 
     }
+
 
 }

@@ -11,7 +11,7 @@ import java.util.StringTokenizer;
  */
 public class CalculateExpression {
 
-    private static final String OPERATORS = "()+-*÷";
+    public static final String OPERATORS = "()+-*÷";
 
     protected static String convertToPolishNotation(String infix) {
         try {
@@ -45,8 +45,8 @@ public class CalculateExpression {
                             stack.push(token);
 
                         } else {
-                            int p = Priority(token);
-                            while (!stack.isEmpty() && !stack.peek().equals("(") && (Priority(stack.peek()) >= p)) {
+                            int p = priority(token);
+                            while (!stack.isEmpty() && !stack.peek().equals("(") && (priority(stack.peek()) >= p)) {
                                 op = stack.pop();
                                 postfix += " " + op;
 
@@ -73,37 +73,40 @@ public class CalculateExpression {
 
             Log.e("postfox", postfix);
             return postfix;
-        } catch (EmptyStackException | NumberFormatException e) {
+        } catch (RuntimeException e) {
             throw new ExpressionFormatException();
 
         }
 
     }
 
-    protected static String calculatePolishNotation(String postfix) {
+    protected static String calculatePolishNotation(String postfix, int base) {
         try {
             Stack<Integer> stack = new Stack<>();
+            String resultView;
             StringTokenizer stringTokenizer = new StringTokenizer(postfix);
             while (stringTokenizer.hasMoreTokens()) {
                 String token = stringTokenizer.nextToken();
                 if (token.equals("+") || token.equals("-") || token.equals("*") || token.equals("÷") || token.equals("n-") || token.equals("n+")) {
-                    Calculate(token, stack);
+                    calculate(token, stack);
 
                 } else {
                     //Log.d("token", "" + token);
-                    stack.push(Integer.valueOf(token));
+                    int converToBase = Integer.parseInt(token, base);
+                    stack.push(converToBase);
 
                 }
 
             }
 
             int result = stack.pop();
+            resultView = Integer.toString(result, base);
             if (!stack.isEmpty()) {
                 throw new ExpressionFormatException();
 
             }
 
-            return Integer.toString(result);
+            return resultView;
         } catch (EmptyStackException | NumberFormatException e) {
             throw new ExpressionFormatException();
 
@@ -111,7 +114,7 @@ public class CalculateExpression {
 
     }
 
-    private static void Calculate(String operator, Stack<Integer> s) {
+    private static void calculate(String operator, Stack<Integer> s) {
         int num1 = s.pop();
         switch (operator) {
             case "n-":
@@ -180,7 +183,7 @@ public class CalculateExpression {
 
     }
 
-    private static int Priority(String operator) {
+    private static int priority(String operator) {
         switch (operator) {
             case "n-":
             case "n+":
