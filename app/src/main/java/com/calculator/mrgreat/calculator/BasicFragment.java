@@ -177,47 +177,6 @@ public class BasicFragment extends Fragment implements View.OnClickListener{
                 }
                 break;
             case R.id.btnMEM:
-                /*String current = new String();
-                if (textView1.getText().toString().equals("")) {
-                    current = "#nodata=0";
-
-                } else {
-                    current = textView1.getText().toString() + "=" + textView2.getText().toString();
-
-                }
-                String dataView = new String();
-
-                try {
-                    MainActivity.dbAdapter.open();
-                    Cursor cursor = MainActivity.dbAdapter.getAllExpression();
-                    if (cursor.moveToFirst()) {
-                        while (!cursor.isAfterLast()) {
-                            dataView += cursor.getString(0)
-                                    + "="
-                                    + cursor.getString(1);
-                            dataView += "#";
-                            cursor.moveToNext();
-
-                        }
-
-                    } else {
-                        dataView = "#nodata";
-
-                    }
-                    MainActivity.dbAdapter.close();
-                } catch (SQLiteException e) {
-                    e.printStackTrace();
-
-                }
-
-                Intent intent = new Intent(BasicFragment.this.getActivity(), HistoryActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("valueCurrentSent", current);
-
-                bundle.putString("valueDataSent", dataView);
-                intent.putExtra("Expression", bundle);
-                startActivityForResult(intent, MainActivity.SHOW);*/
-
                 Intent intent = new Intent();
                 intent.setClass(BasicFragment.this.getActivity(), HistoryActivity.class);
                 startActivity(intent);
@@ -228,65 +187,6 @@ public class BasicFragment extends Fragment implements View.OnClickListener{
         }
 
     }
-
-    /*@Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (data == null) {
-            return;
-
-        }
-        if (requestCode == SHOW) {
-            Bundle bundle = data.getBundleExtra("Result");
-            String reslt = bundle.getString("valueResult");
-            StringTokenizer strT = new StringTokenizer(reslt, "=");
-            Stack<String> stack = new Stack<>();
-            while (strT.hasMoreTokens()) {
-                String token = strT.nextToken();
-                stack.push(token);
-
-            }
-            switch (resultCode) {
-                case CLEAR:
-                    try {
-                        dbAdapter.open();
-                        dbAdapter.deleteAllExpression();
-                        dbAdapter.close();
-
-                    } catch (SQLiteException e) {
-                        e.printStackTrace();
-
-                    }
-
-                    if (!reslt.equals("#nodata=0")) {
-                        textView2.setText(stack.pop());
-                        textView1.setText(stack.pop());
-
-                    } else {
-                        textView2.setText("0");
-                        textView1.setText("");
-
-                    }
-                    break;
-                case SELECT:
-                case CLOSE:
-                    if (!reslt.equals("#nodata=0")) {
-                        textView2.setText(stack.pop());
-                        textView1.setText(stack.pop());
-
-                    } else {
-                        textView2.setText("0");
-                        textView1.setText("");
-
-                    }
-                    break;
-                default:
-                    break;
-
-            }
-
-        }
-
-    }*/
 
     private void ExpressionError(Exception e) {
         String st = "Syntax error";

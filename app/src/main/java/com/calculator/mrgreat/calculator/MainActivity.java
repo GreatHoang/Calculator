@@ -24,10 +24,10 @@ import java.util.StringTokenizer;
 
 public class MainActivity extends ActionBarActivity{
 
-    public static final int SHOW = 1;
+    /*public static final int SHOW = 1;
     public static final int CLEAR = 2;
     public static final int CLOSE = 3;
-    public static final int SELECT = 4;
+    public static final int SELECT = 4;*/
 
     boolean basic = true;
 

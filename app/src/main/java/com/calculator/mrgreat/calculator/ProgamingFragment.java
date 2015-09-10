@@ -16,9 +16,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.StringTokenizer;
 
 
@@ -60,8 +57,6 @@ public class ProgamingFragment extends Fragment implements View.OnClickListener 
 
     Spinner selectRadix;
     int select = 0;
-    ArrayList<View> groupButton;
-    HashMap<View, Integer> gButton;
 
     CalculateExpression calculateExpression;
 
@@ -419,40 +414,6 @@ public class ProgamingFragment extends Fragment implements View.OnClickListener 
 
     }
 
-    private void createGroupButton() {
-        groupButton = new ArrayList<>();
-        groupButton.add(button0);
-        groupButton.add(button1);
-        groupButton.add(button2);
-        groupButton.add(button3);
-        groupButton.add(button4);
-        groupButton.add(button5);
-        groupButton.add(button6);
-        groupButton.add(button7);
-        groupButton.add(button8);
-        groupButton.add(button9);
-        groupButton.add(buttonA);
-        groupButton.add(buttonB);
-        groupButton.add(buttonC);
-        groupButton.add(buttonD);
-        groupButton.add(buttonE);
-        groupButton.add(buttonF);
-
-        gButton = new HashMap<>();
-        gButton.put(button0, 0);
-        gButton.put(button1, 0);
-
-        gButton.put(button0, 1);
-        gButton.put(button1, 1);
-        gButton.put(button2, 1);
-        gButton.put(button3, 1);
-        gButton.put(button4, 1);
-        gButton.put(button5, 1);
-        gButton.put(button6, 1);
-        gButton.put(button7, 1);
-        gButton.put(button8, 1);
-
-    }
 
     private void ExpressionError(Exception e) {
         String st = "Syntax error";

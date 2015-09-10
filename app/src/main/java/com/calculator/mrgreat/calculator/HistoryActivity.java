@@ -29,18 +29,11 @@ public class HistoryActivity extends Activity implements View.OnClickListener {
 
     Button buttonClear;
     Button buttonClose;
-    Button deleteItem;
+    //Button deleteItem;
     RecyclerView recyclerView;
 
     private List<ExpressionFormat> array;
     protected ExpressionViewAdapter adapter;
-
-    ArrayAdapter<String> arrayAdapter;
-    private String current;
-    private String dataView;
-    //private String clr = "#deletedata";
-    private String select;
-    private int type = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -176,7 +169,7 @@ public class HistoryActivity extends Activity implements View.OnClickListener {
 
     }
 
-    public void sentToMain(String value, int resultCode) {
+    /*public void sentToMain(String value, int resultCode) {
         Intent intent = getIntent();
         Bundle bundle = new Bundle();
         bundle.putString("valueResult", value);
@@ -184,7 +177,7 @@ public class HistoryActivity extends Activity implements View.OnClickListener {
         setResult(resultCode, intent);
         finish();
 
-    }
+    }*/
 
 
 }
